@@ -1,76 +1,69 @@
-# 🏋️ Gym Members Exercise Tracking — EDA with Python
- 
-Exploratory Data Analysis on gym member workout data, examining how workout type, BMI, hydration, and gender relate to calories burned and session performance.
- 
-> 📦 Dataset: [Gym Members Exercise Tracking — Kaggle](https://www.kaggle.com/datasets/valakhorasani/gym-members-exercise-tracking)
- 
----
- 
-## 📁 Dataset
- 
-**File:** `gym_members_exercise_tracking.csv`  
-**Size:** 973 members, 15 columns — no missing values, no duplicates
- 
-| Column | Type | Description |
-|--------|------|-------------|
-| `Age` | int | Member age |
-| `Gender` | object | Male / Female |
-| `Weight (kg)` | float | Body weight |
-| `Height (m)` | float | Body height |
-| `Max_BPM` | int | Max heart rate during workout |
-| `Avg_BPM` | int | Average heart rate during workout |
-| `Resting_BPM` | int | Resting heart rate |
-| `Session_Duration (hours)` | float | Length of workout session |
-| `Calories_Burned` | float | Calories burned per session |
-| `Workout_Type` | object | Yoga / HIIT / Cardio / Strength |
-| `Fat_Percentage` | float | Body fat % |
-| `Water_Intake (liters)` | float | Daily water intake |
-| `Workout_Frequency (days/week)` | int | Sessions per week |
-| `Experience_Level` | int | 1 = Beginner, 2 = Intermediate, 3 = Advanced |
-| `BMI` | float | Body Mass Index |
- 
----
- 
-## 📊 Analysis & Findings
- 
-### 1. Distributions
-- **Weight** is right-skewed — most members cluster between 50–90 kg with a long tail toward heavier weights
-- **Calories burned** is roughly bell-shaped, centered around ~900 kcal/session
-- **BMI** is right-skewed, with most members in the normal-to-overweight range
-- **Workout types** are evenly distributed — no single activity dominates the dataset
-### 2. Calories Burned & BMI by Workout Type
-- **Strength training** burns the most calories on average, followed by Cardio, HIIT, and Yoga
-- **BMI is nearly identical across all workout types** (~24–25) — members self-select into activities regardless of body composition
-### 3. Calorie Burn by Gender & Workout Type
-- Male and female calorie burn distributions **overlap almost completely** across all 4 workout types
-- No meaningful gender gap — gender does not predict how many calories are burned
-### 4. Session Duration by Workout Type
-- Average session duration is **similar across all workout types** (~1.1–1.4h)
-- Very few outliers — suggesting structured, consistent workout sessions across the board
-### 5. Water Intake vs. Calories Burned
-- **No clear correlation** — scatter plot shows a diffuse cloud with no visible trend
-- Hydration levels don't predict calorie burn in this dataset
-### 6. BMI vs. Calories Burned by Gender
-- **No trend between BMI and calories burned** for either gender
-- Both male and female data points are scattered uniformly — BMI is not a predictor of workout output
----
- 
-## 🔑 Key Takeaways
- 
-| Finding | Insight |
-|---------|---------|
-| Strength > Cardio > HIIT > Yoga | Workout type is the strongest predictor of calories burned |
-| BMI flat across workout types | Members don't choose workouts based on body composition |
-| Gender gap is negligible | Male and female members burn similar calories per session |
-| Water intake ≠ calorie output | No hydration-performance relationship visible in the data |
-| Consistent session durations | All workout types average ~1.1–1.4h with low variance |
- 
----
- 
-## 🛠️ Tech Stack
- 
-- **Python 3.x**
-- `pandas` — data loading and summary statistics
-- `matplotlib` — scatter plots, bar charts, box plots
-- `seaborn` — histograms, KDE plots, FacetGrid, countplots
----
+🛒 Amazon Sales Analysis — EDA with Python
+Exploratory Data Analysis on Amazon product listings, uncovering pricing patterns, discount strategies, rating behavior, and category trends across 1,465 products.
+
+📦 Dataset: Amazon Sales Dataset — Kaggle
+
+
+📁 Dataset
+File: amazon.csv
+Size: 1,465 products, 16 columns — no duplicates, 2 missing values in rating_count
+ColumnTypeDescriptionproduct_idobjectUnique product identifierproduct_nameobjectName of the productcategoryobjectHierarchical category (separated by |)discounted_priceobject → floatSale price (₹)actual_priceobject → floatOriginal price (₹)discount_percentageobject → floatDiscount offered (%)ratingobject → floatAverage customer rating (0–5)rating_countobject → intNumber of customer reviewsabout_productobjectProduct descriptionreview_title / review_contentobjectCustomer review text
+
+🔧 Data Cleaning
+
+Removed ₹ symbols and commas from price columns → converted to float
+Stripped % from discount_percentage → converted to float
+Converted rating_count to int, filled 2 missing values with 0
+No duplicate rows found
+
+Engineered Features:
+FeatureDescriptionprice_differenceactual_price - discounted_pricediscount_categoryHigh (≥50%) / Medium (≥30%) / LowsentimentPositive (rating ≥ 4) / Negativeprice_categoryBudget (<₹500) / Mid-Range / Premiumprice_rangeBinned price buckets
+
+📊 Analysis & Findings
+1. Rating Distribution
+
+Ratings are left-skewed — the vast majority of products are rated between 3.5 and 4.5
+Peak is around 4.0–4.2, indicating a generally satisfied customer base
+Very few products fall below 3.0, suggesting low-rated items may get delisted
+
+2. Top Product Categories
+
+USB Cables dominate the dataset by a large margin — nearly 3x more listings than the next category
+Smartwatches and Smartphones follow, then Televisions and In-Ear Headphones
+The long tail is steep — top 3 categories account for a disproportionate share of listings
+
+3. Correlation Analysis
+
+actual_price and discounted_price are highly correlated (~0.96) — discounts are proportional, not arbitrary
+discount_percentage has a weak negative correlation with rating (−0.13) — heavily discounted products tend to rate slightly lower
+rating_count has minimal correlation with any pricing variable
+
+4. Discount vs. Price Range
+
+Budget products (<₹200) receive the highest average discounts — often 70–90%
+Discounts gradually decrease as price increases — premium products offer less aggressive markdowns
+This suggests MRP inflation is more common in low-cost accessory categories
+
+5. Discount % vs. Rating (Scatter)
+
+Wide, diffuse scatter with no visible trend — confirms the weak correlation
+Products with 90% discounts span the full rating range from 3.0 to 5.0
+High discounts are not a reliable signal of product quality in either direction
+
+6. Best Value Products
+
+576 Budget / 527 Mid-Range / 362 Premium products after price segmentation
+Strong best-value candidates: discount >30%, rating ≥4.0, review count >50
+Categories with the highest absolute price drops: Air Conditioners (₹33K avg), Laptops (₹22.6K), External SSDs (₹21.6K)
+
+
+🔑 Key Takeaways
+FindingInsightUSB Cables dominate listingsAccessories far outnumber electronics in volumeDiscount ≠ QualityWeak −0.13 correlation between discount % and ratingPrice & discount are proportionalHigh actual price → high absolute discount, not necessarily high %Budget items get steepest % discountsMRP inflation is prevalent in low-cost categoriesMost products are well-ratedRatings cluster at 4.0–4.2; very few below 3.0
+
+🛠️ Tech Stack
+
+Python 3.x
+pandas — data cleaning and feature engineering
+numpy — numerical operations
+matplotlib — scatter plots, bar charts
+seaborn — histograms, heatmaps, countplots
